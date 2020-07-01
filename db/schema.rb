@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_25_064343) do
+
+ActiveRecord::Schema.define(version: 2020_06_30_083354) do
 
   create_table "adresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "zip_code", null: false
@@ -23,6 +24,24 @@ ActiveRecord::Schema.define(version: 2020_06_25_064343) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id_id"], name: "index_adresses_on_user_id_id"
+  end
+
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "ancestry"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ancestry"], name: "index_categories_on_ancestry"
+  end
+
+  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "text"
+    t.bigint "user_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_comments_on_item_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "credit_cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -54,11 +73,11 @@ ActiveRecord::Schema.define(version: 2020_06_25_064343) do
     t.integer "customer_id"
     t.text "detail"
     t.integer "condition", default: 0, null: false
-    t.integer "delivery_fee", null: false
-    t.string "shipping_area", null: false
-    t.integer "delivery_time", null: false
+    t.string "delivery_fee", null: false
+    t.integer "shipping_area", null: false
+    t.string "delivery_time", null: false
     t.integer "user_id", null: false
-    t.integer "brand_id"
+    t.string "brand_id"
     t.integer "category_id"
   end
 
@@ -89,6 +108,8 @@ ActiveRecord::Schema.define(version: 2020_06_25_064343) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "comments", "items"
+  add_foreign_key "comments", "users"
   add_foreign_key "credit_cards", "users"
   add_foreign_key "images", "items"
 end
