@@ -5,10 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
 
   mount_uploader :image, ImageUploader
-
-
-
-
   
   has_many :items
   has_one :credit_card, dependent: :destroy
